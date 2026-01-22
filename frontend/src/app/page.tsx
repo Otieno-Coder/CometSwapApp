@@ -135,7 +135,7 @@ function StepCard({ number, title, description, icon }: StepCardProps) {
       <div className="absolute -top-3 -left-3 w-8 h-8 rounded-full bg-gradient-to-br from-emerald-400 to-cyan-400 flex items-center justify-center text-sm font-bold text-slate-900">
         {number}
       </div>
-      <div className="text-emerald-400 mb-3">{icon}</div>
+      <div className="flex items-center text-emerald-400 mb-3">{icon}</div>
       <h3 className="font-semibold text-white mb-1">{title}</h3>
       <p className="text-sm text-slate-400">{description}</p>
     </div>

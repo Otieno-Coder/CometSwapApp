@@ -124,7 +124,7 @@ function ToastItem({ toast, onClose }: { toast: Toast; onClose: () => void }) {
     <div 
       className={`flex items-start gap-3 p-4 rounded-xl border backdrop-blur-sm shadow-xl animate-slide-up ${bgColors[toast.type]}`}
     >
-      <div className="flex-shrink-0 mt-0.5">
+      <div className="flex-shrink-0 flex items-center mt-0.5">
         {icons[toast.type]}
       </div>
       
