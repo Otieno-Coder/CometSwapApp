@@ -14,6 +14,8 @@ export const metadata: Metadata = {
   title: 'CometSwap - Collateral Swap for Compound V3',
   description: 'Atomically swap your Compound V3 collateral without exiting your position. Powered by Aave flash loans and Uniswap V3.',
   keywords: ['DeFi', 'Compound', 'Collateral', 'Swap', 'Flash Loans', 'Ethereum'],
+  themeColor: '#22c55e',
+  manifest: '/manifest.json',
 };
 
 export default function RootLayout({

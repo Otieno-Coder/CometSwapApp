@@ -88,7 +88,7 @@ interface CollateralRowProps {
 }
 
 function CollateralRow({ collateral }: CollateralRowProps) {
-  const { token, balanceFormatted } = collateral;
+  const { token, balanceFormatted, valueUsd } = collateral;
   const displayBalance = parseFloat(balanceFormatted);
 
   return (
@@ -124,7 +124,12 @@ function CollateralRow({ collateral }: CollateralRowProps) {
             maximumFractionDigits: token.decimals <= 8 ? 6 : 4 
           })}
         </p>
-        <p className="text-xs text-slate-400">{token.symbol}</p>
+        <p className="text-xs text-slate-400">
+          {token.symbol}
+          {valueUsd > 0 && (
+            <> · ${valueUsd.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</>
+          )}
+        </p>
       </div>
     </div>
   );

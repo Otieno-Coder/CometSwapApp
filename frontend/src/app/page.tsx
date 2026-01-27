@@ -1,6 +1,7 @@
 import { SwapCard } from '@/components/SwapCard';
 import { Stats } from '@/components/Stats';
 import { PositionCard } from '@/components/PositionCard';
+import { AnalyticsSummaryCard } from '@/components/AnalyticsSummaryCard';
 
 export default function Home() {
   return (
@@ -28,10 +29,11 @@ export default function Home() {
             <SwapCard />
           </div>
 
-          {/* Right Column - Stats & Position */}
+          {/* Right Column - Stats, Position & Activity */}
           <div className="lg:col-span-7 space-y-6">
             <Stats />
             <PositionCard />
+            <AnalyticsSummaryCard />
           </div>
         </div>
 

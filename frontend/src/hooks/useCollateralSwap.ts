@@ -68,9 +68,12 @@ export function useCollateralSwap() {
 
       setSwapState(prev => ({ ...prev, approvalTxHash: hash }));
 
-      // Wait for confirmation
+      // Wait for confirmation and ensure it didn't revert
       if (publicClient) {
-        await publicClient.waitForTransactionReceipt({ hash });
+        const receipt = await publicClient.waitForTransactionReceipt({ hash });
+        if (receipt.status !== 'success') {
+          throw new Error('Approval transaction reverted');
+        }
       }
 
       return true;
@@ -130,8 +133,11 @@ export function useCollateralSwap() {
 
       setSwapState(prev => ({ ...prev, txHash: hash }));
 
-      // Wait for confirmation
-      await publicClient.waitForTransactionReceipt({ hash });
+      // Wait for confirmation and ensure it didn't revert
+      const receipt = await publicClient.waitForTransactionReceipt({ hash });
+      if (receipt.status !== 'success') {
+        throw new Error('Swap transaction reverted');
+      }
 
       setSwapState(prev => ({ ...prev, status: 'success' }));
       return true;

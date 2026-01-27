@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="1280" viewBox="0 0 720 1280">
+  <rect width="720" height="1280" rx="64" fill="#020617"/>
+  <rect x="60" y="140" width="600" height="260" rx="32" fill="#020617" stroke="#1e293b" stroke-width="4"/>
+  <rect x="60" y="440" width="600" height="260" rx="32" fill="#020617" stroke="#1e293b" stroke-width="4"/>
+  <rect x="60" y="740" width="600" height="200" rx="32" fill="#020617" stroke="#1e293b" stroke-width="4"/>
+  <text x="100" y="210" fill="#e5e7eb" font-family="system-ui, -apple-system, BlinkMacSystemFont" font-size="32">
+    Swap
+  </text>
+  <text x="100" y="510" fill="#e5e7eb" font-family="system-ui, -apple-system, BlinkMacSystemFont" font-size="32">
+    Stats
+  </text>
+  <text x="100" y="810" fill="#e5e7eb" font-family="system-ui, -apple-system, BlinkMacSystemFont" font-size="32">
+    Activity
+  </text>
+</svg>
+

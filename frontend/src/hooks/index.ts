@@ -6,3 +6,9 @@ export type { QuoteResult } from './useUniswapQuote';
 
 export { useCollateralSwap } from './useCollateralSwap';
 export type { SwapStatus, SwapState } from './useCollateralSwap';
+
+export { useAnalytics } from './useAnalytics';
+export type { SwapRecord, AnalyticsSummary, UseAnalyticsResult } from './useAnalytics';
+
+export { useTokenPrices } from './usePrices';
+export type { TokenPrice } from './usePrices';

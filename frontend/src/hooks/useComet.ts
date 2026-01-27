@@ -3,6 +3,7 @@
 import { useReadContract, useReadContracts, useAccount } from 'wagmi';
 import { formatUnits } from 'viem';
 import { addresses, cometAbi, cometCollaterals, TokenInfo, getTokenByAddress } from '@/config/contracts';
+import { useTokenPrices } from './usePrices';
 
 // ============ Types ============
 export interface CollateralPosition {
@@ -83,6 +84,9 @@ export function useComet() {
 export function useCometPosition() {
   const { address: userAddress, isConnected } = useAccount();
 
+  // Load USD prices for all collateral tokens
+  const { prices } = useTokenPrices(cometCollaterals.map((t) => t.address));
+
   // Build contract reads for all collateral balances
   const collateralReads = cometCollaterals.map((token) => ({
     address: addresses.COMET_USDC,
@@ -137,15 +141,21 @@ export function useCometPosition() {
     const result = collateralBalances?.[index];
     const balance = result?.status === 'success' ? (result.result as bigint) : 0n;
 
+    const price = prices[token.address.toLowerCase()];
+    const amount = Number(formatUnits(balance, token.decimals));
+    const valueUsd = price ? amount * price.priceUsd : 0;
+
     return {
       token,
       balance,
       balanceFormatted: formatUnits(balance, token.decimals),
-      valueUsd: 0, // TODO: Fetch prices
+      valueUsd,
       borrowCollateralFactor: 0.8, // Default, should fetch from contract
       liquidateCollateralFactor: 0.85,
     };
   }).filter(c => c.balance > 0n);
+
+  const totalCollateralValueUsd = collaterals.reduce((sum, c) => sum + c.valueUsd, 0);
 
   const position: CometPosition = {
     collaterals,
@@ -155,9 +165,9 @@ export function useCometPosition() {
     supplyBalanceFormatted: formatUnits(supplyBalance ?? 0n, 6),
     isLiquidatable: isLiquidatable ?? false,
     isBorrowCollateralized: isBorrowCollateralized ?? true,
-    totalCollateralValueUsd: 0, // TODO: Calculate from prices
-    borrowingPowerUsd: 0,
-    healthFactor: collaterals.length > 0 ? 999 : 0, // Placeholder
+    totalCollateralValueUsd,
+    borrowingPowerUsd: totalCollateralValueUsd * 0.8, // rough factor
+    healthFactor: collaterals.length > 0 ? 999 : 0, // still placeholder until full risk model
   };
 
   const isLoading = collateralsLoading || borrowLoading || supplyLoading;

@@ -72,6 +72,19 @@ export function Stats() {
                     </div>
                   </div>
 
+                  {/* Collateral Value (from oracle prices) */}
+                  {position.collaterals.length > 0 && (
+                    <div className="bg-slate-800/50 rounded-xl p-4">
+                      <p className="text-xs text-slate-400 mb-1">Total Collateral Value</p>
+                      <p className="text-lg font-semibold text-cyan-400">
+                        ${position.totalCollateralValueUsd.toLocaleString(undefined, {
+                          minimumFractionDigits: 2,
+                          maximumFractionDigits: 2,
+                        })}
+                      </p>
+                    </div>
+                  )}
+
                   {/* Health Indicator */}
                   <div className="bg-slate-800/50 rounded-xl p-4">
                     <div className="flex items-center justify-between mb-2">
@@ -98,7 +111,10 @@ export function Stats() {
                   {/* Collateral Count */}
                   {position.collaterals.length > 0 && (
                     <div className="text-center text-sm text-slate-400">
-                      <span className="text-emerald-400 font-medium">{position.collaterals.length}</span> active collateral{position.collaterals.length !== 1 ? 's' : ''}
+                      <span className="text-emerald-400 font-medium">
+                        {position.collaterals.length}
+                      </span>{' '}
+                      active collateral{position.collaterals.length !== 1 ? 's' : ''}
                     </div>
                   )}
                 </div>

@@ -25,7 +25,7 @@ export const addresses = {
   AAVE_POOL: '0x87870Bca3F3fD6335C3F4ce8392D69350B4fA4E2' as Address,
 
   // CollateralSwap (to be deployed)
-  COLLATERAL_SWAP: '0x8b941d833A740bcFd9Cee5B873FFbB8EbAdA6EF0' as Address,
+  COLLATERAL_SWAP: '0xC7B14D7D6e6bBceBB3c7D7FE17163c331E72faf2' as Address,
 } as const;
 
 // ============ Token Metadata ============
@@ -265,6 +265,19 @@ export const erc20Abi = [
 
 // CollateralSwap ABI
 export const collateralSwapAbi = [
+  {
+    anonymous: false,
+    inputs: [
+      { indexed: true, name: 'user', type: 'address' },
+      { indexed: true, name: 'sourceAsset', type: 'address' },
+      { indexed: true, name: 'targetAsset', type: 'address' },
+      { indexed: false, name: 'sourceAmount', type: 'uint256' },
+      { indexed: false, name: 'targetAmount', type: 'uint256' },
+      { indexed: false, name: 'flashLoanFee', type: 'uint256' },
+    ],
+    name: 'CollateralSwapped',
+    type: 'event',
+  },
   {
     inputs: [
       { name: 'sourceAsset', type: 'address' },
