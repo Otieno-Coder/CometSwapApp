@@ -1,5 +1,5 @@
 import { Address } from 'viem';
-import { addresses } from './contracts';
+import { addressesByChain } from './contracts';
 
 // Simple Chainlink-style price feed ABI (latestAnswer / latestRoundData)
 export const priceFeedAbi = [
@@ -22,27 +22,27 @@ export interface PriceFeedConfig {
 export const priceFeeds: Record<Address, PriceFeedConfig> = {
   // ETH / USD
   // WETH uses ETH/USD
-  [addresses.WETH]: {
+  [addressesByChain[1].WETH!]: {
     feed: '0x5f4eC3Df9cbd43714FE2740f5E3616155c5b8419' as Address, // ETH / USD
     decimals: 8,
   },
   // WBTC / USD
-  [addresses.WBTC]: {
+  [addressesByChain[1].WBTC!]: {
     feed: '0xF4030086522a5bEEa4988F8cA5B36dbC97BeE88c' as Address, // BTC / USD
     decimals: 8,
   },
   // COMP / USD
-  [addresses.COMP]: {
+  [addressesByChain[1].COMP!]: {
     feed: '0xdbd020CAeF83eFd542f4De03e3cF0C28A4428bd5' as Address,
     decimals: 8,
   },
   // UNI / USD
-  [addresses.UNI]: {
+  [addressesByChain[1].UNI!]: {
     feed: '0x553303d460EE0afB37EdFf9bE42922D8FF63220e' as Address,
     decimals: 8,
   },
   // LINK / USD
-  [addresses.LINK]: {
+  [addressesByChain[1].LINK!]: {
     feed: '0x2c1d072e956AFFC0D435Cb7AC38EF18d24d9127c' as Address,
     decimals: 8,
   },

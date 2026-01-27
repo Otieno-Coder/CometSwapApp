@@ -190,7 +190,9 @@ contract CollateralSwap is FlashLoanReceiverBase, Ownable, ReentrancyGuard {
                 fee: swapParams.swapFee,
                 recipient: address(this),
                 amountIn: swapParams.sourceAmount,
-                amountOutMinimum: amount + premium, // Must cover flash loan repayment
+                // Use user-provided minimum target amount for Uniswap slippage protection.
+                // Flash loan repayment is enforced separately below.
+                amountOutMinimum: swapParams.minTargetAmount,
                 sqrtPriceLimitX96: 0
             })
         );

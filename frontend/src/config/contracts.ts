@@ -1,32 +1,85 @@
 import { Address } from 'viem';
 
 // ============ Network Configuration ============
-export const SUPPORTED_CHAIN_ID = 1; // Mainnet (use fork for testing)
+export const SUPPORTED_CHAIN_IDS = [1, 137] as const; // Mainnet, Polygon
 
-// ============ Contract Addresses (Mainnet) ============
-export const addresses = {
-  // Compound V3 (Comet)
-  COMET_USDC: '0xc3d688B66703497DAA19211EEdff47f25384cdc3' as Address,
-  COMET_WETH: '0xA17581A9E3356d9A858b789D68B4d866e593aE94' as Address,
+// ============ Contract Addresses Type ============
+export interface ContractAddresses {
+  COMET_USDC: Address;
+  COMET_WETH?: Address;
+  USDC: Address;
+  WETH?: Address;
+  WBTC?: Address;
+  COMP?: Address;
+  UNI?: Address;
+  LINK?: Address;
+  WMATIC?: Address;
+  UNISWAP_ROUTER: Address;
+  UNISWAP_QUOTER: Address;
+  AAVE_POOL: Address;
+  COLLATERAL_SWAP: Address;
+}
 
-  // Tokens
-  USDC: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48' as Address,
-  WETH: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2' as Address,
-  WBTC: '0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599' as Address,
-  COMP: '0xc00e94Cb662C3520282E6f5717214004A7f26888' as Address,
-  UNI: '0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984' as Address,
-  LINK: '0x514910771AF9Ca656af840dff83E8264EcF986CA' as Address,
+// ============ Contract Addresses by Chain ============
+export const addressesByChain: Record<number, ContractAddresses> = {
+  // Ethereum Mainnet (chainId 1)
+  1: {
+    // Compound V3 (Comet) mainnet USDC
+    COMET_USDC: '0xc3d688B66703497DAA19211EEdff47f25384cdc3' as Address,
+    COMET_WETH: '0xA17581A9E3356d9A858b789D68B4d866e593aE94' as Address,
 
-  // Uniswap
-  UNISWAP_ROUTER: '0x68b3465833fb72A70ecDF485E0e4C7bD8665Fc45' as Address,
-  UNISWAP_QUOTER: '0x61fFE014bA17989E743c5F6cB21bF9697530B21e' as Address,
+    // Tokens (mainnet)
+    USDC: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48' as Address,
+    WETH: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2' as Address,
+    WBTC: '0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599' as Address,
+    COMP: '0xc00e94Cb662C3520282E6f5717214004A7f26888' as Address,
+    UNI: '0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984' as Address,
+    LINK: '0x514910771AF9Ca656af840dff83E8264EcF986CA' as Address,
 
-  // Aave
-  AAVE_POOL: '0x87870Bca3F3fD6335C3F4ce8392D69350B4fA4E2' as Address,
+    // Uniswap (mainnet)
+    UNISWAP_ROUTER: '0x68b3465833fb72A70ecDF485E0e4C7bD8665Fc45' as Address,
+    UNISWAP_QUOTER: '0x61fFE014bA17989E743c5F6cB21bF9697530B21e' as Address,
 
-  // CollateralSwap (to be deployed)
-  COLLATERAL_SWAP: '0xC7B14D7D6e6bBceBB3c7D7FE17163c331E72faf2' as Address,
-} as const;
+    // Aave (mainnet)
+    AAVE_POOL: '0x87870Bca3F3fD6335C3F4ce8392D69350B4fA4E2' as Address,
+
+    // Our CollateralSwap on mainnet fork
+    COLLATERAL_SWAP: '0xC7B14D7D6e6bBceBB3c7D7FE17163c331E72faf2' as Address,
+  },
+
+  // Polygon (chainId 137) - from official Compound III deployments
+  // Source: deployments/polygon/usdc/configuration.json and roots.json
+  137: {
+    // Compound V3 (Comet) Polygon USDC market
+    COMET_USDC: '0xF25212E676D1F7F89Cd72fFEe66158f541246445' as Address,
+
+    // Tokens (Polygon)
+    USDC: '0x2791bca1f2de4661ed88a30c99a7a9449aa84174' as Address,
+    WETH: '0x7ceb23fd6bc0add59e62ac25578270cff1b9f619' as Address,
+    WBTC: '0x1bfd67037b42cf73acf2047067bd4f2c47d9bfd6' as Address,
+    WMATIC: '0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270' as Address,
+
+    // Uniswap V3 (using cross-chain addresses)
+    UNISWAP_ROUTER: '0x68b3465833fb72A70ecDF485E0e4C7bD8665Fc45' as Address,
+    UNISWAP_QUOTER: '0x61fFE014bA17989E743c5F6cB21bF9697530B21e' as Address,
+
+    // Aave v3 Pool (via PoolAddressesProvider)
+    AAVE_POOL: '0x0000000000000000000000000000000000000000' as Address, // resolved on-chain in contracts
+
+    // CollateralSwap deployed on Polygon fork
+    COLLATERAL_SWAP: '0xC95c95283e2FCCaf0836725a2d2FaAf7377DD93c' as Address,
+
+    // Optional fields (unused for now)
+    COMP: '0x0000000000000000000000000000000000000000' as Address,
+    UNI: '0x0000000000000000000000000000000000000000' as Address,
+    LINK: '0x0000000000000000000000000000000000000000' as Address,
+  },
+};
+
+// Helper to get addresses for a specific chain, with mainnet fallback
+export function getAddresses(chainId: number): ContractAddresses {
+  return addressesByChain[chainId] || addressesByChain[1];
+}
 
 // ============ Token Metadata ============
 export interface TokenInfo {
@@ -39,63 +92,93 @@ export interface TokenInfo {
 
 export const tokens: Record<string, TokenInfo> = {
   USDC: {
-    address: addresses.USDC,
+    address: addressesByChain[1].USDC,
     symbol: 'USDC',
     name: 'USD Coin',
     decimals: 6,
-    logoUrl: 'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48/logo.png',
+    logoUrl:
+      'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48/logo.png',
   },
   WETH: {
-    address: addresses.WETH,
+    address: addressesByChain[1].WETH!,
     symbol: 'WETH',
     name: 'Wrapped Ether',
     decimals: 18,
-    logoUrl: 'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png',
+    logoUrl:
+      'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png',
   },
   WBTC: {
-    address: addresses.WBTC,
+    address: addressesByChain[1].WBTC!,
     symbol: 'WBTC',
     name: 'Wrapped Bitcoin',
     decimals: 8,
-    logoUrl: 'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599/logo.png',
+    logoUrl:
+      'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599/logo.png',
   },
   COMP: {
-    address: addresses.COMP,
+    address: addressesByChain[1].COMP!,
     symbol: 'COMP',
     name: 'Compound',
     decimals: 18,
-    logoUrl: 'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xc00e94Cb662C3520282E6f5717214004A7f26888/logo.png',
+    logoUrl:
+      'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xc00e94Cb662C3520282E6f5717214004A7f26888/logo.png',
   },
   UNI: {
-    address: addresses.UNI,
+    address: addressesByChain[1].UNI!,
     symbol: 'UNI',
     name: 'Uniswap',
     decimals: 18,
-    logoUrl: 'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984/logo.png',
+    logoUrl:
+      'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984/logo.png',
   },
   LINK: {
-    address: addresses.LINK,
+    address: addressesByChain[1].LINK!,
     symbol: 'LINK',
     name: 'Chainlink',
     decimals: 18,
-    logoUrl: 'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x514910771AF9Ca656af840dff83E8264EcF986CA/logo.png',
+    logoUrl:
+      'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x514910771AF9Ca656af840dff83E8264EcF986CA/logo.png',
+  },
+  WMATIC: {
+    address: addressesByChain[137].WMATIC!,
+    symbol: 'WMATIC',
+    name: 'Wrapped MATIC',
+    decimals: 18,
+    logoUrl:
+      'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/polygon/assets/0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270/logo.png',
   },
 };
 
 // ============ Comet Collateral Assets ============
-export const cometCollaterals = [
-  tokens.WETH,
-  tokens.WBTC,
-  tokens.COMP,
-  tokens.UNI,
-  tokens.LINK,
-];
+
+export function getCometCollaterals(chainId: number): TokenInfo[] {
+  const addrs = getAddresses(chainId);
+
+  if (chainId === 137) {
+    // Polygon USDC market collaterals from configuration.json
+    return [
+      { ...tokens.WETH, address: addrs.WETH! },
+      { ...tokens.WBTC, address: addrs.WBTC! },
+      { ...tokens.WMATIC, address: addrs.WMATIC! },
+    ];
+  }
+
+  // Mainnet: WETH, WBTC, COMP, UNI, LINK
+  return [
+    { ...tokens.WETH, address: addrs.WETH! },
+    { ...tokens.WBTC, address: addrs.WBTC! },
+    { ...tokens.COMP, address: addrs.COMP! },
+    { ...tokens.UNI, address: addrs.UNI! },
+    { ...tokens.LINK, address: addrs.LINK! },
+  ];
+}
+
+// Legacy default for mainnet
+export const cometCollaterals = getCometCollaterals(1);
 
 // Helper to get token by address
 export function getTokenByAddress(address: Address): TokenInfo | undefined {
-  return Object.values(tokens).find(
-    (t) => t.address.toLowerCase() === address.toLowerCase()
-  );
+  return Object.values(tokens).find((t) => t.address.toLowerCase() === address.toLowerCase());
 }
 
 // ============ ABIs ============

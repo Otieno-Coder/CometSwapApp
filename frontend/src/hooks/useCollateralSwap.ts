@@ -1,9 +1,9 @@
 'use client';
 
 import { useState, useCallback } from 'react';
-import { useAccount, useWriteContract, useWaitForTransactionReceipt, usePublicClient } from 'wagmi';
+import { useAccount, useWriteContract, usePublicClient, useChainId } from 'wagmi';
 import { Address, parseUnits } from 'viem';
-import { addresses, cometAbi, collateralSwapAbi, TokenInfo } from '@/config/contracts';
+import { getAddresses, cometAbi, collateralSwapAbi, TokenInfo } from '@/config/contracts';
 
 export type SwapStatus = 'idle' | 'approving' | 'swapping' | 'success' | 'error';
 
@@ -18,7 +18,9 @@ const DEFAULT_FEE_TIER = 3000; // 0.3%
 
 export function useCollateralSwap() {
   const { address: userAddress, isConnected } = useAccount();
+  const chainId = useChainId();
   const publicClient = usePublicClient();
+  const addresses = getAddresses(chainId);
   
   const [swapState, setSwapState] = useState<SwapState>({
     status: 'idle',

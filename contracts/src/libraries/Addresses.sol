@@ -98,3 +98,41 @@ library MainnetAddresses {
     uint24 constant FEE_MEDIUM = 3000;
     uint24 constant FEE_HIGH = 10000;
 }
+
+/**
+ * @title PolygonAddresses
+ * @notice Library containing contract addresses for Polygon (for reference/fork testing)
+ * @dev Comet addresses from deployments/polygon/usdc in the official comet repo:
+ *      https://github.com/compound-finance/comet
+ */
+library PolygonAddresses {
+    // ============ Network Info ============
+    uint256 constant CHAIN_ID = 137;
+
+    // ============ Compound V3 (Comet) - USDC Market ============
+    // Source: deployments/polygon/usdc/roots.json
+    address constant COMET_USDC = 0xF25212E676D1F7F89Cd72fFEe66158f541246445;
+
+    // ============ Tokens (from deployments/polygon/usdc/configuration.json) ============
+    address constant USDC = 0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174;
+    address constant WETH = 0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619;
+    address constant WBTC = 0x1BFD67037B42Cf73acF2047067bd4F2C47D9BfD6;
+    address constant WMATIC = 0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270;
+
+    // ============ Uniswap V3 ============
+    // Note: Uniswap v3 periphery is deployed at shared addresses on multiple chains.
+    // Router/Quoter here follow the common cross-chain addresses used by Uniswap.
+    address constant UNISWAP_V3_FACTORY = 0x1F98431c8aD98523631AE4a59f267346ea31F984;
+    address constant UNISWAP_SWAP_ROUTER_02 = 0x68b3465833fb72A70ecDF485E0e4C7bD8665Fc45;
+    address constant UNISWAP_QUOTER_V2 = 0x61fFE014bA17989E743c5F6cB21bF9697530B21e;
+
+    // ============ Aave V3 ============
+    // Source: Aave v3 Polygon docs (PoolAddressesProvider)
+    address constant AAVE_POOL_ADDRESSES_PROVIDER = 0xa97684ead0e402dC232d5A977953DF7ECBaB3CDb;
+
+    // ============ Fee Tiers (Uniswap V3) ============
+    uint24 constant FEE_LOWEST = 100;
+    uint24 constant FEE_LOW = 500;
+    uint24 constant FEE_MEDIUM = 3000;
+    uint24 constant FEE_HIGH = 10000;
+}

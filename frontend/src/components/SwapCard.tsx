@@ -7,13 +7,16 @@ import { useCometPosition, useCometAllowance } from '@/hooks/useComet';
 import { useUniswapQuote, useMinAmountOut } from '@/hooks/useUniswapQuote';
 import { useCollateralSwap } from '@/hooks/useCollateralSwap';
 import { useToast } from '@/components/Toast';
-import { cometCollaterals, TokenInfo, addresses } from '@/config/contracts';
+import { cometCollaterals, TokenInfo, getAddresses } from '@/config/contracts';
+import { useChainId } from 'wagmi';
 
 const FEE_TIER = 3000; // 0.3%
 const SLIPPAGE_BPS = 100; // 1%
 
 export function SwapCard() {
   const { isConnected } = useAccount();
+  const chainId = useChainId();
+  const addresses = getAddresses(chainId);
   const { position, isLoading: positionLoading, refetch: refetchPosition } = useCometPosition();
   const { isAllowed, refetch: refetchAllowance } = useCometAllowance(addresses.COLLATERAL_SWAP);
   const { addToast, updateToast } = useToast();

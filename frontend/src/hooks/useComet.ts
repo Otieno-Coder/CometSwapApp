@@ -1,8 +1,8 @@
 'use client';
 
-import { useReadContract, useReadContracts, useAccount } from 'wagmi';
+import { useReadContract, useReadContracts, useAccount, useChainId } from 'wagmi';
 import { formatUnits } from 'viem';
-import { addresses, cometAbi, cometCollaterals, TokenInfo, getTokenByAddress } from '@/config/contracts';
+import { getAddresses, cometAbi, getCometCollaterals, TokenInfo, getTokenByAddress } from '@/config/contracts';
 import { useTokenPrices } from './usePrices';
 
 // ============ Types ============
@@ -38,6 +38,8 @@ export interface CometProtocolStats {
 // ============ Hook: useComet ============
 export function useComet() {
   const { address: userAddress, isConnected } = useAccount();
+  const chainId = useChainId();
+  const addresses = getAddresses(chainId);
 
   // Read protocol stats
   const { data: utilization } = useReadContract({
@@ -83,12 +85,16 @@ export function useComet() {
 // ============ Hook: useCometPosition ============
 export function useCometPosition() {
   const { address: userAddress, isConnected } = useAccount();
+  const chainId = useChainId();
+  const addresses = getAddresses(chainId);
+
+  const cometCollaterals = getCometCollaterals(chainId);
 
   // Load USD prices for all collateral tokens
-  const { prices } = useTokenPrices(cometCollaterals.map((t) => t.address));
+  const { prices } = useTokenPrices(getCometCollaterals(chainId).map((t) => t.address));
 
   // Build contract reads for all collateral balances
-  const collateralReads = cometCollaterals.map((token) => ({
+  const collateralReads = getCometCollaterals(chainId).map((token) => ({
     address: addresses.COMET_USDC,
     abi: cometAbi,
     functionName: 'collateralBalanceOf',
@@ -183,6 +189,8 @@ export function useCometPosition() {
 // ============ Hook: useCometAllowance ============
 export function useCometAllowance(managerAddress: `0x${string}` | undefined) {
   const { address: userAddress, isConnected } = useAccount();
+  const chainId = useChainId();
+  const addresses = getAddresses(chainId);
 
   const { data: isAllowed, isLoading, refetch } = useReadContract({
     address: addresses.COMET_USDC,

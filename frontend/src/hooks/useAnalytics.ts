@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useAccount, useChainId, usePublicClient } from 'wagmi';
 import { Address, Hex, formatUnits } from 'viem';
-import { addresses, collateralSwapAbi, getTokenByAddress } from '@/config/contracts';
+import { getAddresses, collateralSwapAbi, getTokenByAddress } from '@/config/contracts';
 
 export interface SwapRecord {
   txHash: Hex;
@@ -50,6 +50,7 @@ export function useAnalytics(): UseAnalyticsResult {
   const { address: userAddress, isConnected } = useAccount();
   const chainId = useChainId();
   const publicClient = usePublicClient();
+  const addresses = getAddresses(chainId);
 
   const [swaps, setSwaps] = useState<SwapRecord[]>([]);
   const [isLoading, setIsLoading] = useState(false);
